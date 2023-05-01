@@ -5,6 +5,12 @@ const authHandler = require('../middlewares/auth');
 const { login, createUser } = require('../controllers/users');
 const URL_REGEX = require('../utils/constants');
 
+routes.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
+
 routes.post('/signin', celebrate({
   body: Joi.object().keys({
     email: Joi.string().email().required(),
