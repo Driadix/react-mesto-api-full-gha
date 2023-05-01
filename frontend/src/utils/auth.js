@@ -1,7 +1,6 @@
 class Auth {
-  constructor({ url, headers }) {
+  constructor({ url }) {
     this._url = url;
-    this._authorizationHeaders = headers;
   }
 
   _checkResponse(res) {
@@ -19,7 +18,9 @@ class Auth {
   signUp({ email, password }) {
     return this._request(`${this._url}/signup`, {
       method: 'POST',
-      headers: this._authorizationHeaders,
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({ email, password }),
     });
   }
@@ -27,7 +28,9 @@ class Auth {
   signIn({ email, password }) {
     return this._request(`${this._url}/signin`, {
       method: 'POST',
-      headers: this._authorizationHeaders,
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({ email, password }),
     });
   }
@@ -44,8 +47,5 @@ class Auth {
 }
 
 export const authApi = new Auth({
-  url: 'https://auth.nomoreparties.co',
-  headers: {
-    'Content-Type': 'application/json',
-  },
+  url: 'https://api.driadix.mesto.student.nomoredomains.monster'
 });

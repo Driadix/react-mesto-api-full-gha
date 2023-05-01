@@ -1,7 +1,6 @@
 class Api {
-  constructor({ url, headers }) {
+  constructor({ url }) {
     this._url = url;
-    this._authorizationHeaders = headers;
   }
 
   changeLikeCardStatus(id, isLiked) {
@@ -27,14 +26,20 @@ class Api {
   getUser() {
     return this._request(`${this._url}/users/me`, {
       method: 'GET',
-      headers: this._authorizationHeaders,
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json',
+      },
     });
   }
 
   editUser({ name, about }) {
     return this._request(`${this._url}/users/me`, {
       method: 'PATCH',
-      headers: this._authorizationHeaders,
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({ name, about }),
     });
   }
@@ -42,7 +47,10 @@ class Api {
   editAvatar({ avatar }) {
     return this._request(`${this._url}/users/me/avatar`, {
       method: 'PATCH',
-      headers: this._authorizationHeaders,
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({ avatar }),
     });
   }
@@ -50,14 +58,20 @@ class Api {
   getInitialCards() {
     return this._request(`${this._url}/cards`, {
       method: 'GET',
-      headers: this._authorizationHeaders,
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json',
+      },
     });
   }
 
   addCard({ name, link }) {
     return this._request(`${this._url}/cards`, {
       method: 'POST',
-      headers: this._authorizationHeaders,
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({ name, link }),
     });
   }
@@ -65,29 +79,34 @@ class Api {
   removeCard(id) {
     return this._request(`${this._url}/cards/${id}`, {
       method: 'DELETE',
-      headers: this._authorizationHeaders,
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json',
+      },
     });
   }
 
   addLike(id) {
     return this._request(`${this._url}/cards/${id}/likes`, {
       method: 'PUT',
-      headers: this._authorizationHeaders,
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json',
+      },
     });
   }
 
   removeLike(id) {
     return this._request(`${this._url}/cards/${id}/likes`, {
       method: 'DELETE',
-      headers: this._authorizationHeaders,
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json',
+      },
     });
   }
 }
 
 export const api = new Api({
-  url: 'https://mesto.nomoreparties.co/v1/cohort-58',
-  headers: {
-    authorization: 'ce555337-e7fa-4374-b614-ff5e8503e49e',
-    'Content-Type': 'application/json',
-  },
+  url: 'https://api.driadix.mesto.student.nomoredomains.monster'
 });

@@ -34,7 +34,7 @@ module.exports.likeCard = tryCatch(async (req, res) => {
   );
   if (!card) throw new NotFoundError('Передан несуществующий _id карточки');
 
-  res.status(200).send({ message: card });
+  res.status(200).send(card);
 });
 
 module.exports.dislikeCard = tryCatch(async (req, res) => {
@@ -45,5 +45,5 @@ module.exports.dislikeCard = tryCatch(async (req, res) => {
   );
   if (!card) throw new NotFoundError('Передан несуществующий _id карточки');
 
-  res.status(200).send({ message: card });
+  res.status(200).send(card);
 });

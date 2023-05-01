@@ -50,11 +50,17 @@ function App() {
   const [cards, setCards] = React.useState([]);
 
   React.useEffect(() => {
+    handleTokenCheck();
+    // eslint-disable-next-line
+  }, []);
+
+  React.useEffect(() => {
     if (isLoggedIn) {
       api
         .getUser()
         .then((res) => {
           setCurrentUser(res);
+          setUserEmail(res.email)
         })
         .catch((err) => console.log(err));
 
@@ -67,18 +73,13 @@ function App() {
     }
   }, [isLoggedIn]);
 
-  React.useEffect(() => {
-    handleTokenCheck();
-    // eslint-disable-next-line
-  }, []);
-
   function handleCardClick(card) {
     setSelectedCard(card);
     setIsImagePopupOpen(true);
   }
 
   function handleCardLike(card) {
-    const isLiked = card.likes.some((item) => item._id === currentUser._id);
+    const isLiked = card.likes.some((like) => like === currentUser._id);
 
     api
       .changeLikeCardStatus(card._id, !isLiked)
@@ -209,7 +210,7 @@ function App() {
     authApi
       .signIn(logData)
       .then((res) => {
-        localStorage.setItem('jwt', res.token);
+        localStorage.setItem('token', res.token);
         setIsLoggedIn(true);
         setUserEmail(logData.email);
         navigate('/', { replace: true });
@@ -238,13 +239,13 @@ function App() {
   }
 
   function handleTokenCheck() {
-    if (localStorage.getItem('jwt')) {
+    if (localStorage.getItem('token')) {
       authApi
-        .checkToken(localStorage.getItem('jwt'))
+        .checkToken(localStorage.getItem('token'))
         .then((res) => {
           setIsLoggedIn(true);
           navigate('/', { replace: true });
-          setUserEmail(res.data.email);
+          setUserEmail(res.email);
         })
         .catch((err) => console.log(err));
     }
@@ -257,7 +258,7 @@ function App() {
 
   function handleLogout() {
     setIsLoggedIn(false);
-    localStorage.removeItem('jwt');
+    localStorage.removeItem('token');
     setUserEmail('');
     navigate('/sign-in', { replace: true });
   }
