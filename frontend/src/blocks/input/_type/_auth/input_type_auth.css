@@ -1,0 +1,12 @@
+.input_type_auth {
+  background-color: transparent;
+  padding-bottom: 13px;
+  border-bottom: 2px solid #CCCCCC;
+  font-size: .875rem;
+  line-height: 1.21;
+  color: #cccccc;
+}
+
+.input_type_auth::placeholder {
+  color: #cccccc;
+}

@@ -1,0 +1,9 @@
+.header__link {
+  height: fit-content;
+  font-size: 1.125rem;
+  line-height: 1.22;
+  text-align: right;
+  color: #A9A9A9;
+  text-decoration: none;
+  margin-top: 6px;
+}
