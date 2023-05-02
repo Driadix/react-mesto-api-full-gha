@@ -11,7 +11,7 @@ module.exports.getAllCards = tryCatch(async (req, res) => {
 
 module.exports.createCard = tryCatch(async (req, res) => {
   const { name, link } = req.body;
-  const card = (await Card.create({ name, link, owner: req.user._id })).populate('owner');
+  const card = await Card.create({ name, link, owner: req.user._id });
   res.status(201).send(card);
 });
 
