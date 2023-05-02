@@ -1,16 +1,13 @@
-require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const cors = require('cors');
 const expressRateLimit = require('express-rate-limit');
 const { errors } = require('celebrate');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const errorHandler = require('./middlewares/errorHandler');
+const { PORT, DATABASE_URL } = require('./config');
 const routes = require('./routes/index');
-
-const { PORT = 3000 } = process.env;
 
 const app = express();
 
@@ -20,14 +17,14 @@ const expressLimiter = expressRateLimit({
 });
 
 mongoose
-  .connect('mongodb://localhost:27017/mestodb')
+  .connect(DATABASE_URL)
   // eslint-disable-next-line no-console
   .then(() => console.log('Успешное подключение к БД'))
   // eslint-disable-next-line no-console
   .catch(() => console.log('Ошибка подключения к базе данных'));
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(expressLimiter);
 app.use(cors());
 app.use(helmet());

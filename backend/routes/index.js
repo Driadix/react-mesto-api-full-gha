@@ -1,9 +1,13 @@
 const routes = require('express').Router();
-const { celebrate, Joi } = require('celebrate');
 const notFoundHandler = require('../middlewares/notFoundHandler');
 const authHandler = require('../middlewares/auth');
+
+const {
+  loginValidation,
+  createUserValidation,
+} = require('../utils/validation/authValidation');
+
 const { login, createUser } = require('../controllers/users');
-const URL_REGEX = require('../utils/constants');
 
 routes.get('/crash-test', () => {
   setTimeout(() => {
@@ -11,26 +15,13 @@ routes.get('/crash-test', () => {
   }, 0);
 });
 
-routes.post('/signin', celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().email().required(),
-    password: Joi.string().required(),
-  }),
-}), login);
+routes.post('/signin', loginValidation, login);
 
-routes.post('/signup', celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().email().required(),
-    password: Joi.string().min(1).required(),
-    name: Joi.string().min(2).max(30).optional(),
-    about: Joi.string().min(2).max(30).optional(),
-    avatar: Joi.string().pattern(RegExp(URL_REGEX)).optional(),
-  }),
-}), createUser);
+routes.post('/signup', createUserValidation, createUser);
 
 routes.use('/users', authHandler, require('./users'));
 routes.use('/cards', authHandler, require('./cards'));
 
-routes.use(notFoundHandler, authHandler);
+routes.use(notFoundHandler);
 
 module.exports = routes;
